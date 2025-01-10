@@ -1,4 +1,4 @@
 export interface FieldType{
-    username?:string,
+    email?:string,
     password?:string,
 }

@@ -2,9 +2,14 @@ import { Form, Input } from "antd";
 import { FieldType } from "../../../../@types";
 import google from "../../../../img/google.svg";
 import facebook from "../../../../img/facebook.svg";
+import { useAxios } from "../../../../hooks/useAxios";
 function Login() {
-  const onFinish = (e: any) => {
-    console.log(e);
+  const axios = useAxios();
+
+  const onFinish = (e: FieldType) => {
+    axios({ url: "/user/sign-in", body: e, method: "POST" }).then((data) =>
+      console.log(data)
+    );
   };
 
   return (
@@ -18,7 +23,7 @@ function Login() {
         autoComplete="off"
       >
         <Form.Item<FieldType>
-          name="username"
+          name="email"
           rules={[{ required: true, message: "Please input your username!" }]}
         >
           <Input
