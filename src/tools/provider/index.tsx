@@ -1,7 +1,14 @@
 import { ReactElement } from "react";
+import Modals from "../../components/modals";
 
 const ProviderConfg = ({ children }: { children: ReactElement }) => {
-  return <>{children}</>;
+  return (
+    <>
+      {/* <Modals /> */}
+      {children}
+    
+    </>
+  );
 };
 
 export default ProviderConfg;
