@@ -5,11 +5,14 @@ import login from "../../img/Logout.svg";
 import { Badge } from "antd";
 import { BellOutlined } from "@ant-design/icons";
 import { useLocation, useNavigate } from "react-router-dom";
+import { setAuthoriationModalVisibilaty } from "../../redux/modal-clise";
+import { useReduxDispatch } from "../../hooks/useRedux";
 
 function Navbar() {
+  const dispatch = useReduxDispatch();
+
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  console.log(pathname);
   return (
     <header className="flex items-center justify-between  py-5">
       <nav className="w-[150px] h-[35px]">
@@ -56,7 +59,10 @@ function Navbar() {
         <Badge count={19}>
           <img src={shopKorzina} alt="" />
         </Badge>
-        <button className="flex items-center gap-[10px] bg-[#46a358] text-[#FFF] w-[100px] h-[35px] rounded-[6px] justify-center">
+        <button
+          onClick={() => dispatch(setAuthoriationModalVisibilaty())}
+          className="flex items-center gap-[10px] bg-[#46a358] text-[#FFF] w-[100px] h-[35px] rounded-[6px] justify-center"
+        >
           <img src={login} alt="" />
           Login
         </button>
