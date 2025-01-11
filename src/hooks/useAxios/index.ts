@@ -22,11 +22,10 @@ export const useAxios = () => {
         access_token: "64bebc1e2c6d3f056a8c85b7",
         ...params,
       },
-    })
-      .then((data) => data.data)
-      .catch(() => {
-        console.log("Error");
-      });
+    }).then((data) => data.data);
+    // .catch(() => {
+    //   console.log("Error");
+    // });
   };
   return respons;
 };

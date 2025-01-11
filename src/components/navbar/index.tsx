@@ -60,7 +60,11 @@ function Navbar() {
           <img src={shopKorzina} alt="" />
         </Badge>
         <button
-          onClick={() => dispatch(setAuthoriationModalVisibilaty())}
+          onClick={() =>
+            dispatch(
+              setAuthoriationModalVisibilaty({ open: true, isLoading: false })
+            )
+          }
           className="flex items-center gap-[10px] bg-[#46a358] text-[#FFF] w-[100px] h-[35px] rounded-[6px] justify-center"
         >
           <img src={login} alt="" />

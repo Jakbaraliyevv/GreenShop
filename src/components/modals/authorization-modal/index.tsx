@@ -14,8 +14,12 @@ function AuthorizationModal() {
   );
   return (
     <Modal
-      open={authoriationModalVisibilaty}
-      onCancel={() => dispatch(setAuthoriationModalVisibilaty())}
+      open={authoriationModalVisibilaty.open}
+      onCancel={() =>
+        dispatch(
+          setAuthoriationModalVisibilaty({ open: false, isLoading: false })
+        )
+      }
       footer={false}
     >
       <div className="flex items-center justify-center gap-9">

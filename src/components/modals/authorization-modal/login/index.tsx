@@ -3,13 +3,34 @@ import { FieldType } from "../../../../@types";
 import google from "../../../../img/google.svg";
 import facebook from "../../../../img/facebook.svg";
 import { useAxios } from "../../../../hooks/useAxios";
+import { LoadingOutlined } from "@ant-design/icons";
+import { useReduxDispatch, useReduxSelector } from "../../../../hooks/useRedux";
+import { setAuthoriationModalVisibilaty } from "../../../../redux/modal-clise";
 function Login() {
   const axios = useAxios();
 
+  const { authoriationModalVisibilaty } = useReduxSelector(
+    (state) => state.modalSlice
+  );
+  const dispatch = useReduxDispatch();
+
   const onFinish = (e: FieldType) => {
-    axios({ url: "/user/sign-in", body: e, method: "POST" }).then((data) =>
-      console.log(data)
-    );
+    dispatch(setAuthoriationModalVisibilaty({ open: true, isLoading: true }));
+    axios({ url: "/user/sign-in", body: e, method: "POST" })
+      .then((data) => {
+        dispatch(
+          setAuthoriationModalVisibilaty({ open: false, isLoading: false })
+        );
+
+        const { token, user } = data.data;
+        localStorage.setItem("token", token);
+        // console.log();
+      })
+      .catch(() => {
+        dispatch(
+          setAuthoriationModalVisibilaty({ open: true, isLoading: false })
+        );
+      });
   };
 
   return (
@@ -44,10 +65,17 @@ function Login() {
 
         <p className="text-end text-[#46a358] text-[15px]">Forgot Password? </p>
         <button
-          className={`bg-[#46a358] w-full h-[40px] rounded-md text-white mt-5 text-[18px] `}
+          disabled={authoriationModalVisibilaty.isLoading}
+          className={`bg-[#46a358] w-full h-[40px] rounded-md text-white mt-5 text-[18px] ${
+            authoriationModalVisibilaty.isLoading ? "opacity-70" : "opacity-100"
+          } `}
           type="submit"
         >
-          Login
+          {authoriationModalVisibilaty.isLoading ? (
+            <LoadingOutlined />
+          ) : (
+            "Login"
+          )}
         </button>
       </Form>
 
@@ -69,3 +97,6 @@ function Login() {
 }
 
 export default Login;
+
+// value={"raimjonov05@mail.ru"}
+// value={"12345678"}
