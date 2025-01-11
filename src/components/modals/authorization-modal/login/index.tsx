@@ -6,7 +6,10 @@ import { useAxios } from "../../../../hooks/useAxios";
 import { LoadingOutlined } from "@ant-design/icons";
 import { useReduxDispatch, useReduxSelector } from "../../../../hooks/useRedux";
 import { setAuthoriationModalVisibilaty } from "../../../../redux/modal-clise";
+import useSignIn from "react-auth-kit/hooks/useSignIn";
+import { signInWithGoogle } from "../../../../config";
 function Login() {
+  const signIn = useSignIn();
   const axios = useAxios();
 
   const { authoriationModalVisibilaty } = useReduxSelector(
@@ -24,13 +27,30 @@ function Login() {
 
         const { token, user } = data.data;
         localStorage.setItem("token", token);
-        // console.log();
+        signIn({
+          auth: {
+            token: token,
+            type: "Bearer",
+          },
+          userState: user,
+        });
       })
       .catch(() => {
         dispatch(
           setAuthoriationModalVisibilaty({ open: true, isLoading: false })
         );
       });
+  };
+
+  const signInGoole = async () => {
+    const response = await signInWithGoogle();
+    console.log(response);
+
+    await axios({
+      url: "/user/sign-in/google",
+      method: "POST",
+      body: { email: response.user.email },
+    }).then((data) => console.log(data));
   };
 
   return (
@@ -85,7 +105,10 @@ function Login() {
           <p className="w-[40%]text-[#3D3D3D] text-[13px]">Or login with</p>
           <div className="w-[30%] h-[2px] bg-[#EAEAEA]"></div>
         </div>
-        <div className="border w-full h-[40px] rounded-md flex items-center justify-center gap-3 mb-4 cursor-pointer">
+        <div
+          onClick={signInGoole}
+          className="border w-full h-[40px] rounded-md flex items-center justify-center gap-3 mb-4 cursor-pointer"
+        >
           <img src={google} alt="" />
         </div>
         <div className="border w-full h-[40px] rounded-md flex items-center justify-center gap-3 mb-4 cursor-pointer">
